@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<meta name="theme-color" content="#12174e" />
+<meta name="description" content="Submit a paper resource to tluf.org — the asaayist for the future. One locator, one address: every resource is named under the house's paper addressing scheme." />
+<title>Submit a paper resource — T.L.U.F. · tluf.org</title>
+<style>
+  :root{
+    --bg:#ffffff;
+    --bg-soft:#f4f4f8;
+    --panel:#fcfcfe;
+    --ink:#181a33;
+    --ink-2:#2e3153;
+    --muted:#5b5f7a;
+    --line:#e2e3ec;
+    --pink:#d6336c;
+    --gold:#f6c945;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0d0f26;
+      --bg-soft:#141633;
+      --panel:#10122b;
+      --ink:#f0f0f7;
+      --ink-2:#d5d7ea;
+      --muted:#a3a6c2;
+      --line:#262950;
+      --pink:#ff8fb8;
+    }
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink)}
+  body{font-family:var(--sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  a{color:inherit}
+
+  /* ---------- Hero — the Asaayist's navy (as on the front page) ---------- */
+  .hero{background:#12174e;color:#f4f4fb;text-align:center;padding:34px 20px 40px}
+  .hero-inner{max-width:1060px;margin:0 auto}
+  .domain{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:#9fa3cf;margin:0 0 16px}
+  .domain::before,.domain::after{content:" — ";color:#3a3f78;letter-spacing:0}
+  h1.wordmark{font-family:var(--serif);font-weight:700;font-size:clamp(44px, 9vw, 76px);line-height:.9;letter-spacing:-.02em;margin:0;color:#ffffff}
+  h1.wordmark .dot{color:var(--gold);font-weight:400}
+  .expansion{margin:12px 0 0;font-size:clamp(13px, 2vw, 16px);letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:#d7d9f2;line-height:1.4}
+  .expansion .sep{color:var(--gold);font-weight:400;margin:0 .35em}
+  .tagline{margin:18px 0 0;font-family:var(--serif);font-style:italic;font-size:clamp(19px, 2.6vw, 25px);line-height:1.2;color:#ffffff}
+  .tagline .who{color:#ffa4c6;font-style:normal;font-weight:700}
+  .house-nav{margin:22px 0 0;display:flex;justify-content:center;flex-wrap:wrap;gap:8px}
+  .house-nav a{color:#d7d9f2;border:1px solid #343a75;border-radius:999px;padding:7px 16px;font-size:13px;font-weight:600;letter-spacing:.04em;text-decoration:none;transition:border-color .12s ease, color .12s ease}
+  .house-nav a:hover{border-color:var(--gold);color:#ffffff}
+  .house-nav a.here{border-color:var(--gold);color:#ffffff}
+
+  /* ---------- Form ---------- */
+  .page{max-width:720px;margin:0 auto;padding:36px 20px 64px}
+  h2{font-family:var(--serif);font-size:clamp(26px, 4vw, 34px);margin:0 0 10px;color:var(--ink)}
+  .lede{font-size:15.5px;line-height:1.6;color:var(--ink-2);margin:0 0 8px}
+  .lede code{font-family:var(--mono);font-size:.92em}
+  form{margin-top:26px}
+  .field{margin:0 0 20px}
+  label{display:block;font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin:0 0 7px}
+  label .opt{font-weight:400;text-transform:none;letter-spacing:0}
+  input[type="text"],input[type="email"],textarea{
+    width:100%;font:inherit;font-size:15.5px;color:var(--ink);
+    background:var(--panel);border:1px solid var(--line);border-radius:10px;
+    padding:11px 13px;outline:none;
+  }
+  input:focus,textarea:focus{border-color:var(--pink)}
+  textarea{min-height:110px;resize:vertical}
+  .address-line{
+    margin:10px 0 0;padding:12px 14px;border:1px dashed var(--line);border-radius:10px;
+    background:var(--bg-soft);font-size:14px;color:var(--muted);
+  }
+  .address-line .addr{font-family:var(--mono);font-size:14.5px;color:var(--ink);word-break:break-all}
+  .address-line.bad{color:var(--pink)}
+  .fineprint{font-size:13px;line-height:1.55;color:var(--muted);margin:6px 0 0}
+  button[type="submit"]{
+    font:inherit;font-weight:700;font-size:15.5px;cursor:pointer;
+    background:#12174e;color:#ffffff;border:1px solid #12174e;border-radius:999px;
+    padding:12px 30px;transition:background .12s ease,border-color .12s ease;
+  }
+  button[type="submit"]:hover{background:#1d2470;border-color:var(--gold)}
+  button[type="submit"]:disabled{opacity:.55;cursor:default}
+  .result{margin:22px 0 0;padding:14px 16px;border-radius:10px;font-size:15px;line-height:1.55;display:none}
+  .result.ok{display:block;background:var(--bg-soft);border:1px solid var(--gold);color:var(--ink)}
+  .result.err{display:block;background:var(--bg-soft);border:1px solid var(--pink);color:var(--ink)}
+  .result .addr{font-family:var(--mono);word-break:break-all}
+  footer{border-top:1px solid var(--line);padding:26px 20px 40px;text-align:center;color:var(--muted);font-size:13.5px;line-height:1.7}
+  footer .fm{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase}
+</style>
+</head>
+<body>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="domain">tluf.org</p>
+      <h1 class="wordmark">T<span class="dot">.</span>L<span class="dot">.</span>U<span class="dot">.</span>F<span class="dot">.</span></h1>
+      <p class="expansion">Truth<span class="sep">·</span>Lies<span class="sep">·</span>Uncertainty<span class="sep">·</span>Fiction</p>
+      <p class="tagline">tluf.org: the <span class="who">asaayist</span> for the future</p>
+      <nav class="house-nav" aria-label="Site">
+        <a href="/">Front page</a>
+        <a href="/submit.html" class="here">Submit a paper</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="page">
+    <h2>Submit a paper resource</h2>
+    <p class="lede">Submission is open. Give the house a resource — a paper, a preprint, a page —
+    by its locator: an arXiv, DOI, Hexagon, or viXra identifier, or a plain web address.
+    Every resource carries <strong>one address</strong> under the house's paper addressing scheme
+    (a profile of phextura Layer&nbsp;2). The address names the work, wherever it lives;
+    the house verifies the title, assesses the claims, and files its determination under that address.</p>
+    <p class="lede">As you type, the page derives the address your resource will carry.
+    The house's server derives it again on receipt, and the server's derivation is the one recorded.</p>
+
+    <form id="submit-form" novalidate>
+      <div class="field">
+        <label for="locator">Resource locator</label>
+        <input type="text" id="locator" name="locator" maxlength="2048" required
+               placeholder="e.g. arXiv:2611.14552, 10.1214/09-SS054, or https://…" autocomplete="off" />
+        <p class="address-line" id="address-line">This resource's address will be <span class="addr" id="address-out">…</span></p>
+      </div>
+      <div class="field">
+        <label for="title">Title <span class="opt">(optional — the house verifies it)</span></label>
+        <input type="text" id="title" name="title" maxlength="512" autocomplete="off" />
+      </div>
+      <div class="field">
+        <label for="name">Your name or handle <span class="opt">(optional)</span></label>
+        <input type="text" id="name" name="name" maxlength="256" autocomplete="off" />
+      </div>
+      <div class="field">
+        <label for="contact">Contact <span class="opt">(optional, private — never displayed)</span></label>
+        <input type="text" id="contact" name="contact" maxlength="256" autocomplete="off" />
+        <p class="fineprint">Only the house sees this, and only to reach you about your submission.</p>
+      </div>
+      <div class="field">
+        <label for="notes">Notes <span class="opt">(optional)</span></label>
+        <textarea id="notes" name="notes" maxlength="8192"></textarea>
+      </div>
+      <button type="submit" id="submit-btn">Submit to the house</button>
+      <p class="fineprint">No account, no fee. Submission is intake only — assessment is the house's
+      work, and joining the commons is a separate, gated step.</p>
+      <div class="result" id="result" role="status"></div>
+    </form>
+  </div>
+
+  <footer>
+    <p class="fm">T.L.U.F. — Truth · Lies · Uncertainty · Fiction</p>
+    <p>tluf.org: the asaayist for the future · Assay — claim-level assessment for preprints</p>
+  </footer>
+
+<script>
+// canon.js — the tluf.org paper-address canonicalizer (client transcription).
+// Spec: ~/workspace/oracle-service/ADDRESSING.md §4–§6. The spec governs;
+// this file and the receiving service (tluf-submit.py) are two
+// transcriptions of the same section and are tested against the same
+// worked examples (ADDRESSING.md §7). canonicalize(locator) returns
+// {address: "..."} or {error: "MALFORMED" | "AMBIGUOUS-SOURCE"}.
+"use strict";
+
+var TRACKING_KEYS = {
+  utm_source: 1, utm_medium: 1, utm_campaign: 1, utm_term: 1,
+  utm_content: 1, fbclid: 1, gclid: 1, mc_cid: 1, mc_eid: 1
+};
+var UNRESERVED = {};
+"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~"
+  .split("").forEach(function (c) { UNRESERVED[c] = 1; });
+var MODERN_ID = /^\d{4}\.\d{4,5}$/;
+var OLDSTYLE_ID = /^[a-z][a-z-]*(\.[A-Z]{2})?\/\d{7}$/;
+
+function stripSentencePunct(s) {
+  if (s && (s.charAt(s.length - 1) === "." || s.charAt(s.length - 1) === ",")) {
+    return s.slice(0, -1);
+  }
+  return s;
+}
+
+function dropVersion(s) {
+  return s.replace(/v\d+$/, "");
+}
+
+function canonArxiv(idText) {
+  var s = dropVersion(stripSentencePunct(idText.trim()));
+  if (s.toLowerCase().slice(-4) === ".pdf") { s = s.slice(0, -4); }
+  if (MODERN_ID.test(s) || OLDSTYLE_ID.test(s)) { return "px2:arxiv:" + s; }
+  return null;
+}
+
+function pctDecode(s) {
+  try { return decodeURIComponent(s); } catch (e) { return s; }
+}
+
+function canonDoi(idText) {
+  var s = idText.trim();
+  var idx = s.indexOf("doi.org/");
+  if (idx >= 0) { s = s.slice(idx + "doi.org/".length); }
+  s = stripSentencePunct(pctDecode(s)).toLowerCase();
+  if (/^10\.\d{4,9}\/\S+$/.test(s)) { return "px2:doi:" + s; }
+  return null;
+}
+
+function canonRepo(kind, idText) {
+  var s = dropVersion(stripSentencePunct(idText.trim()));
+  if (MODERN_ID.test(s)) { return "px2:" + kind + ":" + s; }
+  return null;
+}
+
+function normalizePct(s) {
+  return s.replace(/%([0-9A-Fa-f]{2})/g, function (m, hex) {
+    var ch = String.fromCharCode(parseInt(hex, 16));
+    if (UNRESERVED[ch]) { return ch; }
+    return "%" + hex.toUpperCase();
+  });
+}
+
+function removeDotSegments(path) {
+  var out = [];
+  var segs = path.split("/");
+  for (var i = 0; i < segs.length; i++) {
+    var seg = segs[i];
+    if (seg === ".") { continue; }
+    if (seg === "..") { if (out.length) { out.pop(); } continue; }
+    out.push(seg);
+  }
+  var res = out.join("/");
+  if (path.charAt(0) === "/" && res.charAt(0) !== "/") { res = "/" + res; }
+  return res;
+}
+
+function strictQuote(s) {
+  return encodeURIComponent(s).replace(/[!'()*]/g, function (c) {
+    return "%" + c.charCodeAt(0).toString(16).toUpperCase();
+  });
+}
+
+// Split a URL by hand (scheme://netloc/path?query#fragment) so the
+// normalization is the spec's, not the URL class's.
+function splitUrl(raw) {
+  var rest = raw, scheme = "";
+  var m = rest.match(/^([A-Za-z][A-Za-z0-9+.-]*):\/\//);
+  if (m) { scheme = m[1].toLowerCase(); rest = rest.slice(m[0].length); }
+  var frag = "";
+  var hi = rest.indexOf("#");
+  if (hi >= 0) { frag = rest.slice(hi + 1); rest = rest.slice(0, hi); }
+  var query = "";
+  var qi = rest.indexOf("?");
+  if (qi >= 0) { query = rest.slice(qi + 1); rest = rest.slice(0, qi); }
+  var netloc = rest, path = "";
+  var si = rest.indexOf("/");
+  if (si >= 0) { netloc = rest.slice(0, si); path = rest.slice(si); }
+  var userinfo = "";
+  var ai = netloc.lastIndexOf("@");
+  if (ai >= 0) { userinfo = netloc.slice(0, ai); netloc = netloc.slice(ai + 1); }
+  var host = netloc, port = "";
+  var ci = netloc.lastIndexOf(":");
+  if (ci >= 0 && /^\d+$/.test(netloc.slice(ci + 1))) {
+    host = netloc.slice(0, ci); port = netloc.slice(ci + 1);
+  }
+  return { scheme: scheme, host: host.toLowerCase(), port: port,
+           path: path, query: query };
+}
+
+function canonUrl(raw) {
+  if (raw.indexOf("://") < 0) { raw = "https://" + raw; }
+  var p = splitUrl(raw);
+  if (p.scheme !== "http" && p.scheme !== "https") { return null; }
+  var host = p.host;
+  if (!host) { return null; }
+  if (host.slice(0, 4) === "www.") { host = host.slice(4); }
+  var netloc = host;
+  var port = p.port ? parseInt(p.port, 10) : null;
+  if (port !== null && !((p.scheme === "http" && port === 80) ||
+                         (p.scheme === "https" && port === 443))) {
+    netloc = host + ":" + port;
+  }
+  var path = removeDotSegments(normalizePct(p.path));
+  if (path === "/") { path = ""; }
+  else if (path.length > 1 && path.charAt(path.length - 1) === "/") {
+    path = path.slice(0, -1);
+  }
+  var pairs = [];
+  if (p.query) {
+    var parts = p.query.split("&");
+    for (var i = 0; i < parts.length; i++) {
+      if (!parts[i]) { continue; }
+      var eq = parts[i].indexOf("=");
+      var k = eq >= 0 ? parts[i].slice(0, eq) : parts[i];
+      var v = eq >= 0 ? parts[i].slice(eq + 1) : "";
+      var kd = pctDecode(k);
+      if (TRACKING_KEYS[kd.toLowerCase()]) { continue; }
+      pairs.push([kd, pctDecode(v)]);
+    }
+    pairs.sort(function (a, b) {
+      if (a[0] !== b[0]) { return a[0] < b[0] ? -1 : 1; }
+      if (a[1] !== b[1]) { return a[1] < b[1] ? -1 : 1; }
+      return 0;
+    });
+  }
+  var query = pairs.map(function (kv) {
+    return kv[1] !== "" ? strictQuote(kv[0]) + "=" + strictQuote(kv[1])
+                        : strictQuote(kv[0]);
+  }).join("&");
+  var url = p.scheme + "://" + netloc + path;
+  if (query) { url += "?" + query; }
+  if (url.indexOf("@e:") >= 0) { url = url.split("@e:").join("%40e:"); }
+  return "px2:url:" + url;
+}
+
+function byKind(kind, rest) {
+  if (kind === "arxiv") { return canonArxiv(rest); }
+  if (kind === "doi") { return canonDoi(rest); }
+  if (kind === "hexagon" || kind === "vixra") { return canonRepo(kind, rest); }
+  return null;
+}
+
+function canonUrlDispatch(s) {
+  var raw = s.indexOf("://") >= 0 ? s : "https://" + s;
+  var p = splitUrl(raw);
+  var bare = p.host.slice(0, 4) === "www." ? p.host.slice(4) : p.host;
+  var path = p.path, m, addr;
+  if (bare === "arxiv.org") {
+    m = path.match(/\/(?:abs|pdf)\/(.+)$/);
+    if (m) {
+      addr = canonArxiv(pctDecode(m[1]));
+      return addr ? { address: addr } : { error: "MALFORMED" };
+    }
+    return { error: "MALFORMED" };
+  }
+  if (bare === "doi.org" || bare === "dx.doi.org") {
+    addr = canonDoi(pctDecode(path.replace(/^\//, "")));
+    return addr ? { address: addr } : { error: "MALFORMED" };
+  }
+  if (bare === "vixra.org") {
+    m = path.match(/\/abs\/(.+)$/);
+    if (m) {
+      addr = canonRepo("vixra", pctDecode(m[1]));
+      return addr ? { address: addr } : { error: "MALFORMED" };
+    }
+    return { error: "MALFORMED" };
+  }
+  if (bare === "hexagonmath.org") {
+    var seg = path.replace(/\/+$/, "").split("/").pop();
+    addr = canonRepo("hexagon", pctDecode(seg));
+    return addr ? { address: addr } : { error: "MALFORMED" };
+  }
+  addr = canonUrl(s);
+  return addr ? { address: addr } : { error: "MALFORMED" };
+}
+
+function canonPx2(s) {
+  var body = s.slice(4);
+  var hi = body.indexOf("#");
+  var head = hi >= 0 ? body.slice(0, hi) : body;
+  var tail = hi >= 0 ? body.slice(hi + 1) : null;
+  var out;
+  if (head.slice(0, 4) === "sum:") {
+    var m = head.match(/^sum:xxh3-128:([0-9A-Fa-f]{32})$/);
+    if (!m) { return { error: "MALFORMED" }; }
+    out = "px2:sum:xxh3-128:" + m[1].toLowerCase();
+  } else {
+    var pin = "";
+    var ei = head.lastIndexOf("@e:");
+    if (ei >= 0) {
+      var pinval = head.slice(ei + 3);
+      if (!/^[0-9A-Fa-f]{16,}$/.test(pinval)) { return { error: "MALFORMED" }; }
+      pin = "@e:" + pinval.toLowerCase();
+      head = head.slice(0, ei);
+    }
+    var ci = head.indexOf(":");
+    if (ci < 0) { return { error: "MALFORMED" }; }
+    var token = head.slice(0, ci).toLowerCase();
+    var rest = head.slice(ci + 1);
+    if (token === "corpus") {
+      if (!/^[a-z][a-z0-9-]*$/.test(rest)) { return { error: "MALFORMED" }; }
+      out = "px2:corpus:" + rest;
+    } else if (token === "tluf") {
+      if (!/^[0-9a-f]{16}$/.test(rest.toLowerCase())) {
+        return { error: "MALFORMED" };
+      }
+      out = "px2:tluf:" + rest.toLowerCase();
+    } else if (token === "arxiv" || token === "doi" ||
+               token === "hexagon" || token === "vixra") {
+      var addr = byKind(token, rest);
+      if (!addr) { return { error: "MALFORMED" }; }
+      out = addr;
+    } else if (token === "url") {
+      var uaddr = canonUrl(rest);
+      if (!uaddr) { return { error: "MALFORMED" }; }
+      out = uaddr;
+    } else {
+      return { error: "MALFORMED" };
+    }
+    out += pin;
+  }
+  if (tail !== null) {
+    if (!/^[a-z][a-z0-9-]*:[a-z][a-z0-9-]*$/.test(tail)) {
+      return { error: "MALFORMED" };
+    }
+    out += "#" + tail;
+  }
+  return { address: out };
+}
+
+function canonicalize(locator) {
+  if (locator === null || locator === undefined) {
+    return { error: "MALFORMED" };
+  }
+  var s = String(locator).trim();
+  if (!s) { return { error: "MALFORMED" }; }
+  if (s.toLowerCase().slice(0, 4) === "px2:") { return canonPx2(s); }
+  var m = s.match(/^(arxiv|doi|hexagon|vixra)\s*:\s*([\s\S]+)$/i);
+  if (m) {
+    var addr = byKind(m[1].toLowerCase(), m[2].trim());
+    return addr ? { address: addr } : { error: "MALFORMED" };
+  }
+  if (/^10\.\d{4,9}\//.test(s)) {
+    var d = canonDoi(s);
+    return d ? { address: d } : { error: "MALFORMED" };
+  }
+  if (/^[a-z][a-z-]*(\.[A-Z]{2})?\/\d{7}(v\d+)?$/.test(s)) {
+    var a = canonArxiv(s);
+    return a ? { address: a } : { error: "MALFORMED" };
+  }
+  if (/^\d{4}\.\d{4,5}(v\d+)?$/.test(s)) {
+    return { error: "AMBIGUOUS-SOURCE" };
+  }
+  if (s.indexOf("://") >= 0 || /^[a-z0-9-]+(\.[a-z0-9-]+)+(\/|$)/i.test(s)) {
+    return canonUrlDispatch(s);
+  }
+  return { error: "MALFORMED" };
+}
+
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = { canonicalize: canonicalize };
+}
+</script>
+<script>
+(function () {
+  var locator = document.getElementById('locator');
+  var line = document.getElementById('address-line');
+  var out = document.getElementById('address-out');
+  var form = document.getElementById('submit-form');
+  var btn = document.getElementById('submit-btn');
+  var result = document.getElementById('result');
+
+  // canonicalize() returns {address: "…"} or {error: CODE} (canon.js).
+  // The texts below mirror the service's ERROR_TEXT word for word, so the
+  // page and the server say the same thing; the server's answer governs.
+  var ERROR_TEXT = {
+    'MALFORMED': 'that locator is not a form the addressing scheme recognizes — paste a repository URL, a prefixed ID (arxiv:… / doi:… / hexagon:… / vixra:…), or a web URL',
+    'AMBIGUOUS-SOURCE': 'that bare ID fits more than one repository — paste the repository URL, or prefix the ID (arxiv:… / hexagon:… / vixra:…)'
+  };
+
+  function derive() {
+    var v = locator.value.trim();
+    if (!v) {
+      line.classList.remove('bad');
+      out.textContent = '…';
+      return;
+    }
+    var r = canonicalize(v);
+    if (r && r.address) {
+      line.classList.remove('bad');
+      out.textContent = r.address;
+    } else {
+      line.classList.add('bad');
+      out.textContent = ERROR_TEXT[r && r.error] || ERROR_TEXT.MALFORMED;
+    }
+  }
+  locator.addEventListener('input', derive);
+  locator.addEventListener('paste', function () { setTimeout(derive, 0); });
+  derive();
+
+  form.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    result.className = 'result';
+    result.textContent = '';
+    var payload = {
+      locator: locator.value,
+      title: document.getElementById('title').value,
+      name: document.getElementById('name').value,
+      contact: document.getElementById('contact').value,
+      notes: document.getElementById('notes').value
+    };
+    if (!payload.locator.trim()) {
+      result.className = 'result err';
+      result.textContent = 'A locator is required — an identifier or a web address for the resource.';
+      return;
+    }
+    btn.disabled = true;
+    fetch('/api/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(function (resp) {
+      return resp.json().then(function (data) { return { status: resp.status, data: data }; });
+    }).then(function (r) {
+      if (r.status === 201 && r.data && r.data.ok) {
+        result.className = 'result ok';
+        result.innerHTML = 'Received. This resource\u2019s address is <span class="addr"></span> — submission №\u00a0' +
+          r.data.sequence + '. The house will take it from here.';
+        result.querySelector('.addr').textContent = r.data.address;
+        form.reset();
+        derive();
+      } else {
+        result.className = 'result err';
+        result.textContent = (r.data && (r.data.message || r.data.error)) || 'The submission was not accepted.';
+      }
+    }).catch(function () {
+      result.className = 'result err';
+      result.textContent = 'The submission endpoint did not answer. Nothing was recorded — please try again later.';
+    }).finally(function () {
+      btn.disabled = false;
+    });
+  });
+})();
+</script>
+</body>
+</html>
